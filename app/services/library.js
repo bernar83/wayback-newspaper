@@ -4,13 +4,17 @@ import $ from "jquery";
 export default Service.extend({
   articles: null,
   state: null,
+  isLoading: false,
 
   async init() {
     this._super(...arguments);
     const state = getNewState();
     this.set("state", state);
-    const articles = await fetchArticles(state);
-    this.set("articles", this.parse(articles));
+    this.set("isLoading", true);
+    fetchArticles(state).then(articles => {
+      this.set("articles", this.parse(articles));
+      this.set("isLoading", false);
+    });
   },
 
   parse(data) {
@@ -35,13 +39,17 @@ export default Service.extend({
   async getNewArticles() {
     const state = getNewState();
     this.set("state", state);
-    const articles = await fetchArticles(state);
-    this.set("articles", this.parse(articles));
+    this.set("isLoading", true);
+    fetchArticles(state).then(articles => {
+      this.set("articles", this.parse(articles));
+      this.set("isLoading", false);
+    });
   }
 });
 
 async function fetchArticles(state) {
-  const url = `https://chroniclingamerica.loc.gov/search/titles/results/?terms=${state}&format=json&page=1`;
+  const newState = state.includes(" ") ? state.split(" ").join("+") : state;
+  const url = `https://chroniclingamerica.loc.gov/search/titles/results/?terms=${newState}&format=json&page=1`;
   const articles = $.getJSON(url)
     .done(() => {
       console.log("success");
@@ -71,10 +79,6 @@ const states = [
     abbreviation: "AK"
   },
   {
-    name: "American Samoa",
-    abbreviation: "AS"
-  },
-  {
     name: "Arizona",
     abbreviation: "AZ"
   },
@@ -99,24 +103,12 @@ const states = [
     abbreviation: "DE"
   },
   {
-    name: "District Of Columbia",
-    abbreviation: "DC"
-  },
-  {
-    name: "Federated States Of Micronesia",
-    abbreviation: "FM"
-  },
-  {
     name: "Florida",
     abbreviation: "FL"
   },
   {
     name: "Georgia",
     abbreviation: "GA"
-  },
-  {
-    name: "Guam",
-    abbreviation: "GU"
   },
   {
     name: "Hawaii",
@@ -153,10 +145,6 @@ const states = [
   {
     name: "Maine",
     abbreviation: "ME"
-  },
-  {
-    name: "Marshall Islands",
-    abbreviation: "MH"
   },
   {
     name: "Maryland",
@@ -219,10 +207,6 @@ const states = [
     abbreviation: "ND"
   },
   {
-    name: "Northern Mariana Islands",
-    abbreviation: "MP"
-  },
-  {
     name: "Ohio",
     abbreviation: "OH"
   },
@@ -235,16 +219,8 @@ const states = [
     abbreviation: "OR"
   },
   {
-    name: "Palau",
-    abbreviation: "PW"
-  },
-  {
     name: "Pennsylvania",
     abbreviation: "PA"
-  },
-  {
-    name: "Puerto Rico",
-    abbreviation: "PR"
   },
   {
     name: "Rhode Island",
@@ -273,10 +249,6 @@ const states = [
   {
     name: "Vermont",
     abbreviation: "VT"
-  },
-  {
-    name: "Virgin Islands",
-    abbreviation: "VI"
   },
   {
     name: "Virginia",

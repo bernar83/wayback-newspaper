@@ -1,7 +1,6 @@
 # newspaper
-
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+http://wayback.surge.sh/
+A front end application that fetches America's historic newspaper pages from 1789-1963.
 
 ## Prerequisites
 

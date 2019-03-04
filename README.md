@@ -1,5 +1,5 @@
 # newspaper
-http://wayback.surge.sh/
+http://wayback.surge.sh/  
 A front end application that fetches America's historic newspaper pages from 1789-1963.
 
 ## Prerequisites

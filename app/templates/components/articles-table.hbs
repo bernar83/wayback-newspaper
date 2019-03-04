@@ -1,0 +1,13 @@
+<h3>{{this.library.state}}</h3>
+<button {{action "getNewArticles"}}>New State</button>
+{{#each this.library.articles as |article|}}
+  <div class="article">
+    <ul>
+      <a href={{article.link}}>
+        <li>Article Name: {{article.name}}</li>
+      </a>
+      <li>Article Publisher: {{article.publisher}}</li>
+      <li>Year: {{article.year}}</li>
+    </ul>
+  </div>
+{{/each}}
